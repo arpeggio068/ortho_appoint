@@ -1482,6 +1482,16 @@ function loadingStart(){
     return new URLSearchParams(window.location.search).get("id") || "";  
   }
 
+
+function getAssetUrl(path) {
+  const projectBaseUrl = new URL('./', window.location.href);
+
+  return new URL(
+    String(path).replace(/^\/+/, ''),
+    projectBaseUrl
+  ).href;
+}
+
   
 //-------     Utility Function                                         -------------// 
 //----------------------------------------------------------------------------------// 
@@ -2273,17 +2283,21 @@ function printAddRec() {
   const yyyy = dateVal.getFullYear() + 543 
   const d = dateVal.getDate()
 
-  const logoUrl =
-    `${window.location.origin}/public/pic/ck_logo.jpg`;
+  const logoUrl = getAssetUrl(
+    'public/pic/ck_logo.jpg'
+  );
 
-  const logoRtUrl =
-    `${window.location.origin}/public/pic/orthopedic.png`;
+  const logoRtUrl = getAssetUrl(
+    'public/pic/orthopedic.png'
+  );
 
-  const fontRegularUrl =
-    `${window.location.origin}/public/fonts/Sarabun-Regular.ttf`;
+  const fontRegularUrl = getAssetUrl(
+    'public/fonts/Sarabun-Regular.ttf'
+  );
 
-  const fontBoldUrl =
-    `${window.location.origin}/public/fonts/Sarabun-Bold.ttf`;
+  const fontBoldUrl = getAssetUrl(
+    'public/fonts/Sarabun-Bold.ttf'
+  );
 
   const html = `
     <!doctype html>
@@ -2701,13 +2715,21 @@ function printData(e) {
   const yyyy = dateVal.getFullYear() + 543;
   const d = dateVal.getDate();
 
-  // public เป็น static folder จึงเรียกผ่าน /pic และ /fonts
-  const logoUrl = `${window.location.origin}/public/pic/ck_logo.jpg`;
-  const logoRtUrl = `${window.location.origin}/public/pic/orthopedic.png`;
-  const fontRegularUrl =
-    `${window.location.origin}/public/fonts/Sarabun-Regular.ttf`;
-  const fontBoldUrl =
-    `${window.location.origin}/public/fonts/Sarabun-Bold.ttf`;
+  const logoUrl = getAssetUrl(
+    'public/pic/ck_logo.jpg'
+  );
+
+  const logoRtUrl = getAssetUrl(
+    'public/pic/orthopedic.png'
+  );
+
+  const fontRegularUrl = getAssetUrl(
+    'public/fonts/Sarabun-Regular.ttf'
+  );
+
+  const fontBoldUrl = getAssetUrl(
+    'public/fonts/Sarabun-Bold.ttf'
+  );
 
   const html = `
     <!doctype html>
