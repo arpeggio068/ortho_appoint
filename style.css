@@ -1,3 +1,26 @@
+
+@font-face {
+  font-family: 'Sarabun';
+  src: url('/public/fonts/Sarabun-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Sarabun';
+  src: url('/public/fonts/Sarabun-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+body {
+  font-family: 'Sarabun', Arial, sans-serif;
+}
+
+
+
 a {
    text-decoration: none;
   }
@@ -606,6 +629,8 @@ a {
 
 
 
+
+
 .surg-table-page {
   display: block;
   width: 100%;
@@ -655,5 +680,342 @@ a {
 @media (max-width: 767.98px) {
   .surg-search-form {
     max-width: 100%;
+  }
+}
+
+
+
+/* ==============================
+   Holiday page
+============================== */
+
+.holiday-page {
+  display: block;
+  flex: 0 0 100%;
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 20px 12px 35px;
+}
+
+/* ==============================
+   Form card
+============================== */
+
+.holiday-card,
+.holiday-list-card {
+  width: 100%;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.07);
+}
+
+.holiday-card {
+  overflow: hidden;
+}
+
+.holiday-card-header {
+  padding: 18px 24px;
+  color: #ffffff;
+  background: linear-gradient(135deg, #2563eb, #4f46e5);
+}
+
+.holiday-card-title {
+  margin: 0 0 4px;
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.holiday-card-subtitle {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.88);
+  font-size: 14px;
+}
+
+.holiday-card-body {
+  padding: 22px 24px 24px;
+}
+
+.holiday-form-label {
+  display: block;
+  margin-bottom: 7px;
+  color: #334155;
+  font-weight: 600;
+}
+
+.holiday-form-label .required {
+  color: #dc2626;
+}
+
+.holiday-card .form-control {
+  min-height: 44px;
+  border-color: #cbd5e1;
+  border-radius: 8px;
+}
+
+.holiday-card .form-control:focus {
+  border-color: #6366f1;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.14);
+}
+
+.holiday-save-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 22px;
+}
+
+.holiday-save-btn {
+  min-width: 130px;
+  min-height: 42px;
+  border-radius: 8px;
+  font-weight: 600;
+}
+
+.holiday-loading {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+}
+
+/* ==============================
+   Holiday table card
+============================== */
+
+.holiday-list-card {
+  margin-top: 24px;
+  padding: 22px 24px 24px;
+}
+
+.holiday-table-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.holiday-table-title {
+  margin: 0 0 4px;
+  color: #1e293b;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.holiday-table-subtitle {
+  margin: 0;
+  color: #64748b;
+  font-size: 13px;
+}
+
+.holiday-count {
+  flex-shrink: 0;
+  padding: 6px 12px;
+  color: #3730a3;
+  background: #eef2ff;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.holiday-table-wrapper {
+  width: 100%;
+  margin-top: 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  overflow-x: auto;
+}
+
+#mainTable {
+  width: 100% !important;
+  margin: 0 !important;
+}
+
+#mainTable thead th {
+  padding: 12px 14px;
+  color: #334155;
+  background: #f8fafc;
+  border-bottom: 2px solid #e2e8f0;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+#mainTable tbody td {
+  padding: 11px 14px;
+  color: #334155;
+  border-color: #e2e8f0;
+  vertical-align: middle;
+}
+
+#mainTable tbody tr:hover {
+  background: #f8fafc;
+}
+
+.column-number {
+  width: 80px;
+}
+
+.column-date {
+  width: 150px;
+}
+
+.column-action {
+  width: 130px;
+}
+
+.holiday-date {
+  color: #1e40af;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.holiday-name {
+  font-weight: 500;
+}
+
+/* ==============================
+   System badge and delete button
+============================== */
+
+.system-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 9px;
+  color: #475569;
+  background: #f1f5f9;
+  border: 1px solid #e2e8f0;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.delete-holiday-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  padding: 0;
+  background: #fff1f2;
+  border: 1px solid #fecdd3;
+  border-radius: 8px;
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease,
+    transform 0.15s ease;
+}
+
+.delete-holiday-btn:hover {
+  background: #ffe4e6;
+  border-color: #fda4af;
+  transform: translateY(-1px);
+}
+
+.delete-holiday-btn:active {
+  transform: translateY(0);
+}
+
+/* ==============================
+   DataTables controls
+============================== */
+
+.holiday-list-card .dataTables_wrapper {
+  width: 100%;
+}
+
+.holiday-list-card .dataTables_length,
+.holiday-list-card .dataTables_filter {
+  margin-bottom: 14px;
+}
+
+.holiday-list-card .dataTables_filter {
+  text-align: right;
+}
+
+.holiday-list-card .dataTables_filter input,
+.holiday-list-card .dataTables_length select {
+  min-height: 36px;
+  border: 1px solid #cbd5e1;
+  border-radius: 7px;
+}
+
+.holiday-list-card .dataTables_info,
+.holiday-list-card .dataTables_paginate {
+  margin-top: 14px;
+}
+
+/* ==============================
+   Empty data
+============================== */
+
+.holiday-empty {
+  padding: 40px 20px;
+  text-align: center;
+  color: #64748b;
+}
+
+.holiday-empty-icon {
+  margin-bottom: 8px;
+  font-size: 38px;
+}
+
+.holiday-empty-title {
+  margin-bottom: 3px;
+  color: #334155;
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.holiday-empty-text {
+  font-size: 14px;
+}
+
+/* ==============================
+   Mobile
+============================== */
+
+@media (max-width: 767.98px) {
+  .holiday-page {
+    padding-right: 8px;
+    padding-left: 8px;
+  }
+
+  .holiday-card-header,
+  .holiday-card-body,
+  .holiday-list-card {
+    padding-right: 16px;
+    padding-left: 16px;
+  }
+
+  .holiday-table-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .holiday-save-row {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .holiday-save-btn {
+    width: 100%;
+  }
+
+  .holiday-list-card .dataTables_filter {
+    text-align: left;
+  }
+
+  .system-badge {
+    font-size: 0;
+  }
+
+  .system-badge span {
+    font-size: 16px;
   }
 }

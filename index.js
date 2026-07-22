@@ -28,7 +28,12 @@
         }
     }
 
-    function loadAddForm() {
+function loadAddForm() {
+      const datePattern =
+    '(0[1-9]|1[0-9]|2[0-9])/(0[1-9]|1[0-2])/(?:19|20)[0-9]{2}' +
+    '|29/(0[13-9]|1[0-2])/(?:19|20)(?:0[48]|[2468][048]|[13579][26])' +
+    '|30/(0[13-9]|1[0-2])/(?:19|20)[0-9]{2}' +
+    '|31/(0[13578]|1[02])/(?:19|20)[0-9]{2}';
         return `
             <form class="add-surg-form" id="addSurgForm" novalidate>
 
@@ -107,7 +112,7 @@
                             type="text"
                             class="form-control chk_date"
                             placeholder="เลือกวันนัด"
-                            pattern="(0[1-9]|1\\d|2[0-9])/(0[1-9]|1[0-2])/(?:19|20)[0-9]{2}|29/(0[13-9]|1[0-2])/(?:19|20)(?:0[48]|[2468][048]|[13579][26])|30/(0[13-9]|1[0-2])/(?:19|20)[0-9]{2}|31/(0[13578]|1[02])/(?:19|20)[0-9]{2}"
+                            pattern="${datePattern}"
                             onchange="return validateDateLeapYear()"
                             required
                         >
@@ -158,9 +163,15 @@
 
             </form>
         `;
-    }
+}
 
 function loadSearchForm() {
+  const datePattern =
+    '(0[1-9]|1[0-9]|2[0-9])/(0[1-9]|1[0-2])/(?:19|20)[0-9]{2}' +
+    '|29/(0[13-9]|1[0-2])/(?:19|20)(?:0[48]|[2468][048]|[13579][26])' +
+    '|30/(0[13-9]|1[0-2])/(?:19|20)[0-9]{2}' +
+    '|31/(0[13578]|1[02])/(?:19|20)[0-9]{2}';
+
   return `
     <div class="search-page" id="search_el">
 
@@ -342,7 +353,7 @@ function loadSearchForm() {
                             type="text"
                             class="form-control chk_date"
                             placeholder="เลือกวันนัด"
-                            pattern="(0[1-9]|1\\d|2[0-9])/(0[1-9]|1[0-2])/(?:19|20)[0-9]{2}|29/(0[13-9]|1[0-2])/(?:19|20)(?:0[48]|[2468][048]|[13579][26])|30/(0[13-9]|1[0-2])/(?:19|20)[0-9]{2}|31/(0[13578]|1[02])/(?:19|20)[0-9]{2}"
+                            pattern="${datePattern}"
                             onchange="return validateDateForEdit()"
                             required
                         >
@@ -512,6 +523,123 @@ function loadSurgTableView() {
 
         <div id="surg_table" class="table-responsive"></div>
       </div>
+
+    </div>
+  `;
+}
+
+
+function loadAddHolidayForm() {
+  const datePattern =
+    '(0[1-9]|1[0-9]|2[0-9])/(0[1-9]|1[0-2])/(?:19|20)[0-9]{2}' +
+    '|29/(0[13-9]|1[0-2])/(?:19|20)(?:0[48]|[2468][048]|[13579][26])' +
+    '|30/(0[13-9]|1[0-2])/(?:19|20)[0-9]{2}' +
+    '|31/(0[13578]|1[02])/(?:19|20)[0-9]{2}';
+
+  return `
+    <div class="holiday-page">
+
+      <section class="holiday-card">
+        <div class="holiday-card-header">
+          <div>
+            <h4 class="holiday-card-title">
+              📅 บันทึกวันหยุด
+            </h4>
+
+            <p class="holiday-card-subtitle">
+              เพิ่มวันที่และชื่อวันหยุดที่ต้องการปิดรับนัด
+            </p>
+          </div>
+        </div>
+
+        <div class="holiday-card-body">
+          <form id="addHolidaysForm" novalidate>
+
+            <div class="row g-3">
+              <div class="col-12 col-md-5">
+                <label for="date" class="holiday-form-label">
+                  วันที่
+                  <span class="required">*</span>
+                </label>
+
+                <input
+                  name="date"
+                  id="date"
+                  type="text"
+                  class="form-control chk_date"
+                  placeholder="เลือกวันหยุด"
+                  pattern="${datePattern}"
+                  onchange="return validateDateHoliday()"
+                  autocomplete="off"
+                  required
+                >
+
+                <div class="invalid-feedback">
+                  เลือกวันที่จากปฏิทินเท่านั้น
+                </div>
+              </div>
+
+              <div class="col-12 col-md-7">
+                <label for="name" class="holiday-form-label">
+                  ชื่อวันหยุด
+                  <span class="required">*</span>
+                </label>
+
+                <input
+                  type="text"
+                  id="name"
+                  class="form-control"
+                  placeholder="ชื่อวันหยุด เช่น วันขึ้นปีใหม่"
+                  autocomplete="off"
+                  required
+                >
+
+                <div class="invalid-feedback">
+                  กรุณาระบุชื่อวันหยุด
+                </div>
+              </div>
+            </div>
+
+            <div class="holiday-save-row">
+              <button
+                id="btn1"
+                type="submit"
+                class="btn btn-primary holiday-save-btn"                
+              >
+                บันทึก
+              </button>
+
+              <div class="holiday-loading">
+                <span
+                  id="resp-spinner1"
+                  class="spinner-grow spinner-grow-sm text-danger d-none"
+                  role="status"
+                  aria-hidden="true"
+                ></span>
+
+                <span
+                  id="resp-spinner2"
+                  class="spinner-grow spinner-grow-sm text-warning d-none"
+                  role="status"
+                  aria-hidden="true"
+                ></span>
+
+                <span
+                  id="resp-spinner3"
+                  class="spinner-grow spinner-grow-sm text-info d-none"
+                  role="status"
+                  aria-hidden="true"
+                ></span>
+              </div>
+            </div>
+
+          </form>
+        </div>
+      </section>
+
+      <section class="holiday-list-card">
+        <div id="table_holidays"></div>
+      </section>
 
     </div>
   `;
@@ -734,12 +862,12 @@ async function setSearchForm() {
 
         gEmptyQ = res.emptyQ || [];
 
-        disabledDaysArray = Array.isArray(res.disabledDays)
+        gDisabledDaysArray = Array.isArray(res.disabledDays)
             ? res.disabledDays
             : [];
 
         gFirstDate = res.firstDate || "";
-        populateDates(disabledDaysArray, gFirstDate);
+        populateDates(gDisabledDaysArray, gFirstDate);
         letGoTrim();  
 
         console.log("setSearchForm เรียบร้อย");
@@ -875,6 +1003,143 @@ async function showTableForm(event) {
 }
 
 
+async function setHolidaysForm(){
+    console.log("เริ่ม setHolidaysForm");
+
+    try {
+        const id = getTokenFromUrl();
+
+        if (!id) {
+            await Swal.fire({
+                position: "center",
+                icon: "error",
+                title: "ข้อมูล web ไม่ถูกต้อง",
+                text: "ไม่พบข้อมูล web id",
+                showConfirmButton: true,
+                timer: 2500
+            });
+
+            return false;
+        }
+
+        const payload = {
+            id: id
+        };
+
+        const fd = new FormData();
+
+        fd.append("action", "apiLoadAddHoliday");
+        fd.append("data", JSON.stringify(payload));
+
+        const res = await api(mainUrl, {
+            method: "POST",
+            redirect: "follow",
+            mode: "cors",
+            body: fd
+        });
+
+        // console.log("apiDataForSearch response:", res);
+
+        if (!res) {
+            throw new Error("ไม่พบข้อมูลตอบกลับจากหน้าจัดการวันหยุด");
+        }
+
+        if (res.status === "token_error") {
+            await Swal.fire({
+                position: "center",
+                icon: "error",
+                title: "ข้อมูล web id ไม่ถูกต้อง",
+                text: res.message || "โปรดตรวจสอบ web link",
+                showConfirmButton: true,
+                timer: 2500
+            });
+
+            return false;
+        }
+
+        if (res.status !== "success") {
+            throw new Error(
+                res.message || "ระบบไม่สามารถโหลดข้อมูลเริ่มต้นได้"
+            );
+        }
+        
+
+        gHolidaysAll = Array.isArray(res.holidaysAll)
+            ? res.holidaysAll
+            : [];
+
+        gHolidays = Array.isArray(res.holidays)
+            ? res.holidays
+            : [];
+
+        showHolidayTable(gHolidaysAll)
+        populateHolidays(gHolidays);
+        letGoTrim();  
+
+        console.log("setHolidaysForm เรียบร้อย");
+
+        return true;
+
+    } catch (error) {
+        console.error("setHolidaysForm error:", error);
+
+        await Swal.fire({
+            position: "center",
+            icon: "error",
+            title: "โหลดข้อมูลเริ่มต้นไม่สำเร็จ",
+            text: error.message || "เกิดข้อผิดพลาดในการโหลดข้อมูลเริ่มต้น",
+            showConfirmButton: true
+        });
+
+        return false;
+    }
+
+}
+
+
+
+async function showAddHolidaysForm(event){
+
+  if (event) {
+        event.preventDefault();
+    }
+
+    if (!gIsLoggedIn) {
+        return;
+    }
+
+    try {
+        loadingStart();
+        
+        $("#app").html(loadAddHolidayForm());
+        
+        await setHolidaysForm();       
+        
+       
+        //document.getElementById("date1")?.focus();
+
+        $("#addHolidaysForm")
+            .off("submit")
+            .on("submit", async function (event) {
+                event.preventDefault();
+                await addHoliday(event);
+            });
+
+    } catch (error) {
+        console.error("showTableForm error:", error);
+
+        await Swal.fire({
+            icon: "error",
+            title: "เกิดข้อผิดพลาด",
+            text: error.message || "ไม่สามารถเปิดหน้าตารางนัดได้"
+        });
+
+    } finally {
+        loadingEnd();
+    }
+}
+
+
 //
 
 // -------------------------- Web Page Load Func ----------------------------------------------------
@@ -940,6 +1205,34 @@ function setupNavbarEvents() {
             // ใส่ภายหลัง
             await showTableForm();
         });
+
+      $("#holidays-link")
+        .off("click")
+        .on("click", async function (event) {
+            event.preventDefault();
+
+            if (!gIsLoggedIn) {
+                return;
+            }  //navbarDropdown
+
+            setActiveNav("navbarDropdown");
+
+            if(gUserLevel !== 'admin'){
+              Swal.fire({
+                      position: 'center',
+                      icon: 'warning',
+                      title: 'คุณไม่มีสิทธิใช้งาน!',
+                      showConfirmButton: true,
+                      timer: 3000
+                    }) 
+
+              return
+
+            }           
+
+            
+            await showAddHolidaysForm();
+        });  
 }
 
 
@@ -1183,74 +1476,7 @@ function loadingStart(){
             .replaceAll("'", '&#039;');
     }
 
-  function populateDates(disabledDays, firstDate) {
-    const results = (disabledDays || []).map(dateText =>
-        new Date(convertDateStr(dateText)).toDateString()
-    );
 
-    const $date = $("#date");
-
-    if (!$date.length) {
-        console.error("populateDates: ไม่พบ element #date");
-        return;
-    }
-
-    if ($date.hasClass("hasDatepicker")) {
-        $date.datepicker("destroy");
-    }
-
-    $date.datepicker({
-        minDate: new Date(firstDate),
-        maxDate: 90,
-        dateFormat: "dd/mm/yy",
-        dayNamesMin: ["อา", "จ", "อ", "พ", "พฤ", "ศ", "ส"],
-        monthNames: [
-        "มกราคม",
-        "กุมภาพันธ์",
-        "มีนาคม",
-        "เมษายน",
-        "พฤษภาคม",
-        "มิถุนายน",
-        "กรกฎาคม",
-        "สิงหาคม",
-        "กันยายน",
-        "ตุลาคม",
-        "พฤศจิกายน",
-        "ธันวาคม"
-        ],
-
-        beforeShowDay: function (date) {
-        const disabled =
-            results.includes(date.toDateString()) ||
-            date.getDay() === 0 ||
-            date.getDay() === 2 ||
-            date.getDay() === 5 ||
-            date.getDay() === 6;
-
-        return [!disabled];
-        }
-    });
-
-    loadingEnd();
-}
-
-  function populateNames(names){         
-   
-      
-      $('#name').autocomplete({
-        source: names
-      });
-    
-  }  
-
-  function populateTels(tels){    
-   
-      
-      $("#tel").autocomplete({
-        source: tels
-      });
-    
-  }
 
   function getTokenFromUrl() {
     return new URLSearchParams(window.location.search).get("id") || "";  
@@ -1286,49 +1512,16 @@ function validateLogin(){
     return isValid;
   }
 
-  function validateAddHolidays(){
-    const forms = document.querySelectorAll("#addHolidaysForm")
+  function validateAddHolidays(){   
     
-    Array.prototype.slice.call(forms).forEach(function (form) {
-      form.addEventListener('submit', function (event) {
-        if (!form.checkValidity()) {
-          event.preventDefault()
-          event.stopPropagation()
-        }
+    const form = document.getElementById("addHolidaysForm")
+    
+    const isValid = form.checkValidity();
 
-        form.classList.add('was-validated')
-      }, false)
-    })
+    form.classList.add('was-validated');
 
-    return Array.prototype.every.call(forms,function(form){
-        return form.checkValidity();
-    });
-  }
-
-  function removeValidate(){
-    const loginform = document.querySelectorAll("#loginform")
-    Array.prototype.slice.call(loginform).forEach(function(form){ 
-        form.classList.remove('was-validated')              
-     })
-
-    const recform = document.querySelectorAll("#addSurgForm")    
-     Array.prototype.slice.call(recform).forEach(function(form){ 
-        form.classList.remove('was-validated')              
-    })
-
-    const holidayForm = document.querySelectorAll("#addHolidaysForm")    
-     Array.prototype.slice.call(holidayForm).forEach(function(form){ 
-        form.classList.remove('was-validated')              
-    })
-
-    const surgTable = document.querySelectorAll("#surgTable")    
-     Array.prototype.slice.call(surgTable).forEach(function(form){ 
-        form.classList.remove('was-validated')              
-    })
-
-    //surgTable
-       
-  }
+    return isValid;
+  }  
 
 
 function validateDateSurgTable() {
@@ -1460,16 +1653,16 @@ function validateSurgApointTableForm(){
       }) 
   }
  
-  function validateDateLeapYear(){
+  function validateDateLeapYear(){ //for add record
       const date = $('#date').val() 
       let strResult = ''     
-      if(date !== '' && !disabledDaysArray.includes(date)){
+      if(date !== '' && !gDisabledDaysArray.includes(date)){
         const findQ = gEmptyQ.find(r=>r[0]===date)
         const remain = typeof(findQ) == 'undefined' ? 0 : findQ[1]
-        strResult = "นัดได้อีก " + (10 - remain) + " คน"        
+        strResult = "นัดได้อีก " + (gMaxPerDay - remain) + " คน"        
         $('#showRemain').html(strResult)
       }
-      else if(disabledDaysArray.includes(date)){
+      else if(gDisabledDaysArray.includes(date)){
         strResult = "นัดได้อีก 0 คน"       
         $('#showRemain').html(strResult)
       }
@@ -1497,7 +1690,7 @@ function validateSurgApointTableForm(){
                  
           return false;
         }        
-        else if(disabledDaysArray.includes(el.value)){
+        else if(gDisabledDaysArray.includes(el.value)){
           el.setCustomValidity("Invalid date! include disabled day."); 
           //console.log('disday')          
           return false;
@@ -1525,13 +1718,13 @@ function validateSurgApointTableForm(){
   function validateDateForEdit(){
       const date = $('#date').val() 
       let strResult = ''     
-      if(date !== '' && !disabledDaysArray.includes(date)){
+      if(date !== '' && !gDisabledDaysArray.includes(date)){
         const findQ = gEmptyQ.find(r=>r[0]===date)
         const remain = typeof(findQ) == 'undefined' ? 0 : findQ[1]
-        strResult = "นัดได้อีก " + (10 - remain) + " คน"        
+        strResult = "นัดได้อีก " + (gMaxPerDay - remain) + " คน"        
         $('#showRemain').html(strResult)
       }
-      else if(disabledDaysArray.includes(date)){
+      else if(gDisabledDaysArray.includes(date)){
         strResult = "นัดได้อีก 0 คน"       
         $('#showRemain').html(strResult)
       }
@@ -1550,7 +1743,7 @@ function validateSurgApointTableForm(){
         let initDaysBefore = new Date(addDayToCurrentDate(1));
         let endDaysBefore = new Date(addDayToCurrentDate(90));
 
-        // on edit not check disabledDaysArray if date not change 
+        // on edit not check gDisabledDaysArray if date not change 
 
         if(checkLeapYears(year) === false && Number(month) == 2 && Number(date) > 28 ){             
           el.setCustomValidity("Invalid date! Not a leap year and date value exceeds 28.");          
@@ -1608,14 +1801,98 @@ async function api(url, options = {}) {
 //----------------------------- Global variable config ---------------------------------------------------------
 
 let gUser_data, gUser_name, gUser_pass, gUserRealName, gUserId, gUserLevel;
-let disabledDaysArray = [];
+let gDisabledDaysArray = [];
 let gEmptyQ, gNameArr, gTelArr, gHolidays, gHolidaysAll, gFirstDate;
 let gName, gHN, gTel, gAddRecObj;
 let gIsLoggedIn = false;
 let gSearchObjMain, gSearchData, gCupData, gInitDate, gEditDataId, gOriginHosp;
 
+const gEnableDayOfWeek = [1, 3 , 4]
+const gMaxPerDay = 10;
+
 
 //----------------------------- Global variable config ---------------------------------------------------------
+function populateDates(disabledDays, firstDate) {
+  const disabledDateSet = new Set(
+    (disabledDays || []).map(dateText =>
+      new Date(convertDateStr(dateText)).toDateString()
+    )
+  );
+
+  const $date = $('#date');
+
+  if (!$date.length) {
+    console.error('populateDates: ไม่พบ element #date');
+    loadingEnd();
+    return;
+  }
+
+  const datepickerOptions = {
+    minDate: new Date(firstDate),
+    maxDate: 90,
+    dateFormat: 'dd/mm/yy',
+
+    dayNamesMin: [
+      'อา', 'จ', 'อ', 'พ', 'พฤ', 'ศ', 'ส'
+    ],
+
+    monthNames: [
+      'มกราคม',
+      'กุมภาพันธ์',
+      'มีนาคม',
+      'เมษายน',
+      'พฤษภาคม',
+      'มิถุนายน',
+      'กรกฎาคม',
+      'สิงหาคม',
+      'กันยายน',
+      'ตุลาคม',
+      'พฤศจิกายน',
+      'ธันวาคม'
+    ],
+
+    beforeShowDay: function(date) {
+      const dayOfWeek = date.getDay();
+
+      const disabled =
+        disabledDateSet.has(date.toDateString()) || !gEnableDayOfWeek.includes(dayOfWeek);
+        
+
+      return [!disabled];
+    }
+  };
+
+  if ($date.hasClass('hasDatepicker')) {
+    // อัปเดต Instance เดิม
+    $date.datepicker('option', datepickerOptions);
+    $date.datepicker('refresh');
+
+  } else {
+    // สร้างครั้งแรก
+    $date.datepicker(datepickerOptions);
+  }
+
+  loadingEnd();
+}
+
+
+function populateNames(names){         
+   
+      
+      $('#name').autocomplete({
+        source: names
+      });
+    
+}  
+
+function populateTels(tels){    
+   
+      
+      $("#tel").autocomplete({
+        source: tels
+      });
+    
+}
 
 
 async function handleLogin(event) {
@@ -1725,7 +2002,7 @@ async function handleLogin(event) {
 
         gTelArr = Array.isArray(res.uniqueTelArr) ? res.uniqueTelArr : [];
 
-        disabledDaysArray = Array.isArray(res.disabledDays) ? res.disabledDays : [];
+        gDisabledDaysArray = Array.isArray(res.disabledDays) ? res.disabledDays : [];
 
         gFirstDate = res.firstDate || ''
 
@@ -1896,7 +2173,7 @@ async function addRecord(event) {
 
             await Swal.fire({
                 position: 'center',
-                icon: 'error',
+                icon: 'warning',
                 title: 'คิวนัดเต็ม!',
                 text: 'กรุณาเลือกวันนัดใหม่',
                 showConfirmButton: true,
@@ -1984,154 +2261,27 @@ async function addRecord(event) {
     }
 }
 
-function printAddRec(){
-    const name = gAddRecObj.name
-    const hn = gAddRecObj.hn === '' ? '-' : gAddRecObj.hn
-    const tel = gAddRecObj.tel
-    const date = gAddRecObj.upDate 
-    const hosp = gAddRecObj.userRealName
-    const dateVal = new Date(convertDateStr(date))
-    const dayOfWeek = thaiDay(dateVal.getDay())
-    const monthTh = thaiMonth(dateVal.getMonth())
-    const yyyy = dateVal.getFullYear() + 543 
-    const d = dateVal.getDate()
+function printAddRec() {
+  const name = gAddRecObj.name
+  const hn = gAddRecObj.hn === '' ? '-' : gAddRecObj.hn
+  const tel = gAddRecObj.tel === '000-0000000' ? '-' : gAddRecObj.tel;
+  const date = gAddRecObj.upDate 
+  const hosp = gAddRecObj.userRealName
+  const dateVal = new Date(convertDateStr(date))
+  const dayOfWeek = thaiDay(dateVal.getDay())
+  const monthTh = thaiMonth(dateVal.getMonth())
+  const yyyy = dateVal.getFullYear() + 543 
+  const d = dateVal.getDate()
 
-    let html= `<html>
-      <head>
-        <base target="_top">
-        <style>
-          .container{
-            margin:10px;
-          }
+  const logoUrl =
+    `${window.location.origin}/public/pic/ck_logo.jpg`;
 
-          table,th,td{
-              
-              border-collapse: collapse;
-            } 
-          th,td,tr{
-            padding: 5px; 
-            text-align: left;
-          }
-          table{
-            width:100%;
-          }
-          h3,h4,h5{
-            padding: 5px;
-            text-align: left;
-          }
-          p{
-            padding: 5px;
-            margin-bottom: 5px;
-            font-size: 0.875em;
-          }
-        </style>
-      </head>
-      <body>
-         <div class="container">
-           <h4>ใบนัดตรวจรักษาแผนกศัลยกรรมกระดูก โรงพยาบาลสมเด็จพระยุพราชเชียงของ</h4>
-           <table>
-             <tr><td><b>ชื่อ</b></td><td>${name}</td></tr>
-             <tr><td><b>HN</b></td><td>${hn}</td></tr>
-             <tr><td><b>โทร</b></td><td>${tel}</td></tr>
-             <tr><td><b>ผู้นัด</b></td><td>${hosp}</td></tr>
-             <tr><td><b>วันนัด</b></td><td>วัน ${dayOfWeek} ที่ ${d} ${monthTh} ${yyyy}</td></tr>             
-           </table>
-           <p>โปรดนำใบนัดมาติดต่อที่ อาคารผู้ป่วยนอก ในช่วงเวลา 8.00 น. - 10.00 น.</p>
-           <p>ติดต่อแผนกศัลยกรรมกระดูก โทร (053) 791206 ต่อ 610 หรือโทร 095-2389220</p>
-           <hr>
-         </div>
-      </body>
-    </html>` 
-    let printWin = window.open('','','left=1,top=1,width=800,height=400,toolbar=0,scrollbars=0,status=0');   
-    printWin.document.write(html);
-    printWin.document.close();
-    printWin.focus();
-    printWin.print();
-    printWin.close();
+  const logoRtUrl =
+    `${window.location.origin}/public/pic/orthopedic.png`;
 
-  }
-
-
-
-
-
-//--------------------- API Login Add Reccord  --------------------------------------------------------//
-//--------------------- API Login Add Reccord --------------------------------------------------------//
-
-
-//-------------------------- Search for Edit and print ------------------------------------------------------
-
-function search(){
-         const searchInput =  document.getElementById("searchInput").value.toString().toLowerCase().trim();
-         let searchWords = searchInput.split(/\s+/);
-         const searchColumns =[2];
-         
-         let resultsArray = searchInput === "" ? [] :gSearchData.filter(function(r){  //search from global var name is gSearchData
-             return searchWords.every(function(word){
-              return searchColumns.some(function(colIndex){
-                 return r[colIndex].toString().toLowerCase().indexOf(word) !== -1               
-               
-               });             
-             });
-           });
-           
-        let searchResultBox = document.getElementById("searchResults");
-        let templateBox = document.getElementById("rowTemplate"); 
-        let template = templateBox.content;
-        
-        searchResultBox.innerHTML="";
-        
-        resultsArray.forEach(function(r){
-        
-          let tr = template.cloneNode(true);         
-          let nameColumn = tr.querySelector(".name");
-          let hnColumn = tr.querySelector(".hn");         
-          let dateColumn = tr.querySelector(".date"); 
-          let userColumn = tr.querySelector(".user");   
-          let printButton = tr.querySelector(".print-button");      
-          let deleteButton = tr.querySelector(".delete-button");
-          let editButton = tr.querySelector(".edit-button");          
-          
-          printButton.dataset.id = r[0];
-          deleteButton.dataset.id = r[0];
-          editButton.dataset.id = r[0];
-          nameColumn.textContent= r[2];
-          hnColumn.textContent= r[1];         
-          dateColumn.textContent= r[4];
-          userColumn.textContent= r[7];
-          searchResultBox.appendChild(tr);
-        });
-  }
-
-
-function printData(e) {
-  const id = e.target.dataset.id;
-  const indx = gCupData.findIndex(r => r[0] === id);
-
-  if (indx === -1) {
-    Swal.fire({
-      icon: 'error',
-      title: 'ไม่พบข้อมูลที่ต้องการพิมพ์'
-    });
-    return;
-  }
-
-  const hn = gCupData[indx][1] === '' ? '-' : gCupData[indx][1];
-  const name = gCupData[indx][2];
-  const tel = gCupData[indx][3] || '-';
-  const date = gCupData[indx][4];
-  const hosp = gCupData[indx][7] || '-';
-
-  const dateVal = new Date(convertDateStr(date));
-  const dayOfWeek = thaiDay(dateVal.getDay());
-  const monthTh = thaiMonth(dateVal.getMonth());
-  const yyyy = dateVal.getFullYear() + 543;
-  const d = dateVal.getDate();
-
-  // public เป็น static folder จึงเรียกผ่าน /pic และ /fonts
-  const logoUrl = `${window.location.origin}/public/pic/ck_logo.jpg`;
   const fontRegularUrl =
     `${window.location.origin}/public/fonts/Sarabun-Regular.ttf`;
+
   const fontBoldUrl =
     `${window.location.origin}/public/fonts/Sarabun-Bold.ttf`;
 
@@ -2140,6 +2290,7 @@ function printData(e) {
     <html lang="th">
       <head>
         <meta charset="utf-8">
+
         <title>ใบนัดตรวจรักษา</title>
 
         <style>
@@ -2170,8 +2321,8 @@ function printData(e) {
           body {
             margin: 0;
             padding: 0;
-            background: #ffffff;
             color: #111827;
+            background: #ffffff;
             font-family: "Sarabun", sans-serif;
             font-size: 15px;
             line-height: 1.5;
@@ -2181,13 +2332,14 @@ function printData(e) {
             width: 100%;
             max-width: 180mm;
             margin: 0 auto;
+            overflow: hidden;
             border: 1px solid #cbd5e1;
             border-radius: 8px;
-            overflow: hidden;
           }
 
           .header {
-            display: flex;
+            display: grid;
+            grid-template-columns: 90px minmax(0, 1fr) 90px;
             align-items: center;
             padding: 16px 20px;
             border-bottom: 2px solid #7e22ce;
@@ -2197,11 +2349,18 @@ function printData(e) {
             width: 72px;
             height: 72px;
             object-fit: contain;
-            margin-right: 18px;
+          }
+
+          .hospital-logo-left {
+            justify-self: start;
+          }
+
+          .hospital-logo-right {
+            justify-self: end;
           }
 
           .header-text {
-            flex: 1;
+            min-width: 0;
             text-align: center;
           }
 
@@ -2324,7 +2483,7 @@ function printData(e) {
           <header class="header">
             <img
               src="${logoUrl}"
-              class="hospital-logo"
+              class="hospital-logo hospital-logo-left"
               alt="ตราโรงพยาบาล"
             >
 
@@ -2337,6 +2496,435 @@ function printData(e) {
                 โรงพยาบาลสมเด็จพระยุพราชเชียงของ
               </p>
             </div>
+
+            <img
+              src="${logoRtUrl}"
+              class="hospital-logo hospital-logo-right"
+              alt="ตราแผนกศัลยกรรมกระดูก"
+            >
+          </header>
+
+          <section class="content">
+
+            <div class="appointment-date">
+              <div class="appointment-label">
+                วันนัดตรวจรักษา
+              </div>
+
+              <div class="appointment-value">
+                วัน${dayOfWeek} ที่ ${d} ${monthTh} ${yyyy}
+              </div>
+            </div>
+
+            <h2 class="section-title">
+              ข้อมูลผู้รับบริการ
+            </h2>
+
+            <table class="info-table">
+              <tbody>
+                <tr>
+                  <td class="label">ชื่อ-สกุล</td>
+                  <td class="value">${name}</td>
+                </tr>
+
+                <tr>
+                  <td class="label">HN</td>
+                  <td class="value">${hn}</td>
+                </tr>
+
+                <tr>
+                  <td class="label">โทรศัพท์</td>
+                  <td class="value">${tel}</td>
+                </tr>
+
+                <tr>
+                  <td class="label">ผู้นัด</td>
+                  <td class="value">${hosp}</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div class="notice">
+              <p class="notice-title">
+                ข้อแนะนำ
+              </p>
+
+              <p class="notice-text">
+                โปรดนำใบนัดมาติดต่อที่อาคารผู้ป่วยนอก
+                ในช่วงเวลา 08.00 น. – 10.00 น.
+              </p>
+            </div>
+
+          </section>
+
+          <footer class="footer">
+            <p>
+              แผนกศัลยกรรมกระดูก โทร (053) 791206 ต่อ 610
+            </p>
+
+            <p>
+              โทรศัพท์มือถือ 095-2389220
+            </p>
+          </footer>
+
+        </main>
+      </body>
+    </html>
+  `;
+
+  const printWin = window.open(
+    '',
+    '',
+    'left=50,top=50,width=800,height=700,toolbar=0,scrollbars=1,status=0'
+  );
+
+  if (!printWin) {
+    Swal.fire({
+      icon: 'warning',
+      title: 'ไม่สามารถเปิดหน้าพิมพ์ได้',
+      text: 'โปรดอนุญาต Popup สำหรับเว็บไซต์นี้'
+    });
+
+    return;
+  }
+
+  printWin.document.open();
+  printWin.document.write(html);
+  printWin.document.close();
+
+  // รอโลโก้ทั้งสองภาพโหลดเสร็จ
+  const imagePromises = Array
+    .from(printWin.document.images)
+    .map(img => {
+      if (img.complete) {
+        return Promise.resolve();
+      }
+
+      return new Promise(resolve => {
+        img.onload = resolve;
+        img.onerror = resolve;
+      });
+    });
+
+  // รอฟอนต์ Sarabun โหลดเสร็จ
+  const fontPromise = printWin.document.fonts
+    ? printWin.document.fonts.ready
+    : Promise.resolve();
+
+  Promise.all([
+    fontPromise,
+    ...imagePromises
+  ]).then(() => {
+    printWin.focus();
+    printWin.print();
+
+    setTimeout(() => {
+      printWin.close();
+    }, 500);
+  });
+}
+
+
+
+
+
+//--------------------- API Login Add Reccord  --------------------------------------------------------//
+//--------------------- API Login Add Reccord --------------------------------------------------------//
+
+
+//-------------------------- Search for Edit and print ------------------------------------------------------
+
+function search(){
+         const searchInput =  document.getElementById("searchInput").value.toString().toLowerCase().trim();
+         let searchWords = searchInput.split(/\s+/);
+         const searchColumns =[2];
+         
+         let resultsArray = searchInput === "" ? [] :gSearchData.filter(function(r){  //search from global var name is gSearchData
+             return searchWords.every(function(word){
+              return searchColumns.some(function(colIndex){
+                 return r[colIndex].toString().toLowerCase().indexOf(word) !== -1               
+               
+               });             
+             });
+           });
+           
+        let searchResultBox = document.getElementById("searchResults");
+        let templateBox = document.getElementById("rowTemplate"); 
+        let template = templateBox.content;
+        
+        searchResultBox.innerHTML="";
+        
+        resultsArray.forEach(function(r){
+        
+          let tr = template.cloneNode(true);         
+          let nameColumn = tr.querySelector(".name");
+          let hnColumn = tr.querySelector(".hn");         
+          let dateColumn = tr.querySelector(".date"); 
+          let userColumn = tr.querySelector(".user");   
+          let printButton = tr.querySelector(".print-button");      
+          let deleteButton = tr.querySelector(".delete-button");
+          let editButton = tr.querySelector(".edit-button");          
+          
+          printButton.dataset.id = r[0];
+          deleteButton.dataset.id = r[0];
+          editButton.dataset.id = r[0];
+          nameColumn.textContent= r[2];
+          hnColumn.textContent= r[1];         
+          dateColumn.textContent= r[4];
+          userColumn.textContent= r[7];
+          searchResultBox.appendChild(tr);
+        });
+  }
+
+
+function printData(e) {
+  const id = e.target.dataset.id;
+  const indx = gCupData.findIndex(r => r[0] === id);
+
+  if (indx === -1) {
+    Swal.fire({
+      icon: 'error',
+      title: 'ไม่พบข้อมูลที่ต้องการพิมพ์'
+    });
+    return;
+  }
+
+  const hn = gCupData[indx][1] === '' ? '-' : gCupData[indx][1];
+  const name = gCupData[indx][2];
+  const tel = gCupData[indx][3] === '000-0000000' ? '-' : gCupData[indx][3];
+  const date = gCupData[indx][4];
+  const hosp = gCupData[indx][7] || '-';
+
+  const dateVal = new Date(convertDateStr(date));
+  const dayOfWeek = thaiDay(dateVal.getDay());
+  const monthTh = thaiMonth(dateVal.getMonth());
+  const yyyy = dateVal.getFullYear() + 543;
+  const d = dateVal.getDate();
+
+  // public เป็น static folder จึงเรียกผ่าน /pic และ /fonts
+  const logoUrl = `${window.location.origin}/public/pic/ck_logo.jpg`;
+  const logoRtUrl = `${window.location.origin}/public/pic/orthopedic.png`;
+  const fontRegularUrl =
+    `${window.location.origin}/public/fonts/Sarabun-Regular.ttf`;
+  const fontBoldUrl =
+    `${window.location.origin}/public/fonts/Sarabun-Bold.ttf`;
+
+  const html = `
+    <!doctype html>
+    <html lang="th">
+      <head>
+        <meta charset="utf-8">
+        <title>ใบนัดตรวจรักษา</title>
+
+        <style>
+          @font-face {
+            font-family: "Sarabun";
+            src: url("${fontRegularUrl}") format("truetype");
+            font-weight: 400;
+            font-style: normal;
+          }
+
+          @font-face {
+            font-family: "Sarabun";
+            src: url("${fontBoldUrl}") format("truetype");
+            font-weight: 700;
+            font-style: normal;
+          }
+
+          @page {
+            size: A4 portrait;
+            margin: 14mm;
+          }
+
+          * {
+            box-sizing: border-box;
+          }
+
+          html,
+          body {
+            margin: 0;
+            padding: 0;
+            background: #ffffff;
+            color: #111827;
+            font-family: "Sarabun", sans-serif;
+            font-size: 15px;
+            line-height: 1.5;
+          }
+
+          .appointment-sheet {
+            width: 100%;
+            max-width: 180mm;
+            margin: 0 auto;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            overflow: hidden;
+          }
+
+          .header {
+            display: grid;
+            grid-template-columns: 90px minmax(0, 1fr) 90px;
+            align-items: center;
+            padding: 16px 20px;
+            border-bottom: 2px solid #7e22ce;
+          }
+
+          .hospital-logo {
+            width: 72px;
+            height: 72px;
+            object-fit: contain;
+          }
+
+          .hospital-logo-left {
+            justify-self: start;
+          }
+
+          .hospital-logo-right {
+            justify-self: end;
+          }
+
+          .header-text {
+            min-width: 0;
+            text-align: center;
+          }
+
+          .document-title {
+            margin: 0 0 4px;
+            color: #6b21a8;
+            font-size: 21px;
+            font-weight: 700;
+          }
+
+          .hospital-name {
+            margin: 0;
+            font-size: 16px;
+            font-weight: 600;
+          }
+
+          .content {
+            padding: 20px;
+          }
+
+          .appointment-date {
+            margin-bottom: 18px;
+            padding: 12px 16px;
+            text-align: center;
+            background: #faf5ff;
+            border: 1px solid #d8b4fe;
+            border-radius: 7px;
+          }
+
+          .appointment-label {
+            margin-bottom: 3px;
+            color: #6b21a8;
+            font-size: 14px;
+            font-weight: 600;
+          }
+
+          .appointment-value {
+            color: #111827;
+            font-size: 20px;
+            font-weight: 700;
+          }
+
+          .section-title {
+            margin: 0 0 8px;
+            padding-bottom: 5px;
+            color: #6b21a8;
+            font-size: 16px;
+            font-weight: 700;
+            border-bottom: 1px solid #e5e7eb;
+          }
+
+          .info-table {
+            width: 100%;
+            margin-bottom: 18px;
+            border-collapse: collapse;
+          }
+
+          .info-table td {
+            padding: 6px 8px;
+            vertical-align: top;
+            border-bottom: 1px solid #f1f5f9;
+          }
+
+          .info-table .label {
+            width: 105px;
+            color: #374151;
+            font-weight: 700;
+          }
+
+          .info-table .value {
+            color: #111827;
+          }
+
+          .notice {
+            padding: 12px 15px;
+            background: #fffbeb;
+            border-left: 4px solid #f59e0b;
+            border-radius: 4px;
+          }
+
+          .notice-title {
+            margin: 0 0 4px;
+            font-weight: 700;
+          }
+
+          .notice-text {
+            margin: 0;
+          }
+
+          .footer {
+            padding: 12px 20px;
+            color: #374151;
+            text-align: center;
+            border-top: 1px solid #cbd5e1;
+            font-size: 13px;
+          }
+
+          .footer p {
+            margin: 2px 0;
+          }
+
+          @media print {
+            html,
+            body {
+              width: 210mm;
+              min-height: 297mm;
+            }
+
+            .appointment-sheet {
+              border-color: #94a3b8;
+              break-inside: avoid;
+            }
+          }
+        </style>
+      </head>
+
+      <body>
+        <main class="appointment-sheet">
+
+          <header class="header">
+            <img
+              src="${logoUrl}"
+              class="hospital-logo hospital-logo-left"
+              alt="ตราโรงพยาบาล"
+            >
+
+            <div class="header-text">
+              <h1 class="document-title">
+                ใบนัดตรวจรักษาแผนกศัลยกรรมกระดูก
+              </h1>
+
+              <p class="hospital-name">
+                โรงพยาบาลสมเด็จพระยุพราชเชียงของ
+              </p>
+            </div>
+
+            <img
+              src="${logoRtUrl}"
+              class="hospital-logo hospital-logo-right"
+              alt="ตราแผนกศัลยกรรมกระดูก"
+            >
           </header>
 
           <section class="content">
@@ -2490,7 +3078,7 @@ function afterEditViewLoads(e) {
     gInitDate = date;
     gOriginHosp = record[7] || "";
 
-    // populateDates(disabledDaysArray, gFirstDate);
+    // populateDates(gDisabledDaysArray, gFirstDate);
 
     $("#search_el").hide();
     $("#addSurgForm").show();
@@ -2613,7 +3201,7 @@ async function editData(event){
 
             await Swal.fire({
                 position: 'center',
-                icon: 'error',
+                icon: 'warning',
                 title: 'คิวนัดเต็ม!',
                 text: 'กรุณาเลือกวันนัดใหม่',
                 showConfirmButton: true,
@@ -2895,7 +3483,7 @@ async function deleteData(e) {
             body: fd
         });
 
-        console.log('delete record response:', res);
+        // console.log('delete record response:', res);
 
         if (!res) {
             throw new Error('ไม่พบข้อมูลตอบกลับจากระบบ');
@@ -3058,7 +3646,7 @@ async function clickShowTable(event) {
             body: fd
         });
 
-        console.log('apiLoadSurgTableData response:', res);
+        // console.log('apiLoadSurgTableData response:', res);
 
         if (!res) {
             throw new Error('ไม่พบข้อมูลตอบกลับจากระบบ');
@@ -3111,49 +3699,61 @@ async function clickShowTable(event) {
     
 }
 
-function showSurgTable(arr){
-     if(arr.length === 0){
-        Swal.fire({
-                     position: 'center',
-                     icon: 'warning',
-                     title: 'ไม่พบข้อมูล!' ,
-                     timer: 3000
-              }) 
-        return
-     }
-    
-       
-      let table_result = `<table class="table table-responsive table-bordered" id="mainTable" style="text-align:center;">  
-        <thead>
-          <tr>            
-            <th scope='col' class="dt-center">วันที่</th>                             
-            <th scope='col' class="dt-center">ชื่อ-สกุล</th>
-            <th scope='col' class="dt-center">HN</th>              
-            <th scope='col' class="dt-center">โทร</th> 
-            <th scope='col' class="dt-center">ผู้นัด</th>                            
-          </tr>
-        </thead>
-        <tbody>        
-        `    
-        arr.forEach(r=>{
-            let dayW = new Date(convertDateStr(r[4])).getDay()
-            let colorStr = colorDay(dayW)
-            table_result += `<tr style="${colorStr}">            
-            <td>${r[4]}</td>          
-            <td>${r[2]}</td>
-            <td>${r[1]}</td>
-            <td>${r[3]}</td>              
-            <td>${r[7]}</td>                                        
-           </tr>` 
-                 
-        })
-        table_result += "</tbody></table>"     
-        //$('#surg_table').html(table_result)
-        //$('#showSurgTable').show()  
-        $('#surg_table').html(table_result);
-        $('#showSurgTable').removeClass('d-none'); 
-   
+function showSurgTable(arr) {
+  if (!arr || arr.length === 0) {
+    Swal.fire({
+      position: 'center',
+      icon: 'warning',
+      title: 'ไม่พบข้อมูล!',
+      timer: 3000
+    });
+
+    return;
   }
+
+  let table_result = `
+    <table
+      class="table table-bordered"
+      id="mainTable"
+      style="text-align:center;"
+    >
+      <thead>
+        <tr>
+          <th scope="col" class="dt-center">วันที่</th>
+          <th scope="col" class="dt-center">ชื่อ-สกุล</th>
+          <th scope="col" class="dt-center">HN</th>
+          <th scope="col" class="dt-center">โทร</th>
+          <th scope="col" class="dt-center">ผู้นัด</th>
+        </tr>
+      </thead>
+
+      <tbody>
+  `;
+
+  arr.forEach(r => {
+    const dayW = new Date(convertDateStr(r[4])).getDay();
+    const colorStr = colorDay(dayW);
+
+    table_result += `
+      <tr>
+        <td style="${colorStr}">${r[4]}</td>
+        <td style="${colorStr}">${r[2]}</td>
+        <td style="${colorStr}">${r[1]}</td>
+        <td style="${colorStr}">${r[3]}</td>
+        <td style="${colorStr}">${r[7]}</td>
+      </tr>
+    `;
+  });
+
+  table_result += `
+      </tbody>
+    </table>
+  `;
+
+  $('#surg_table').html(table_result);
+  $('#showSurgTable').removeClass('d-none');
+}
+
 
   function printSurgTable(){
      let html= `<html>
@@ -3202,6 +3802,577 @@ function showSurgTable(arr){
 
 //-------------------------- Appointment Table ----------------------------------------------------------------
 //-------------------------- Appointment Table ----------------------------------------------------------------
+
+
+//-------------------------- Add Holidays ---------------------------------------------------------------------
+//-------------------------- Add Holidays ---------------------------------------------------------------------
+
+function populateHolidays(disabledDays) {
+  const $dateInput = $('#date');
+
+  if ($dateInput.length === 0) return;
+
+  const disabledDateSet = new Set(
+    (Array.isArray(disabledDays) ? disabledDays : [])
+      .map(dateStr =>
+        new Date(convertDateStr(dateStr)).toDateString()
+      )
+  );
+
+  const beforeShowDay = date => {
+    const isHoliday = disabledDateSet.has(date.toDateString());
+    const isWeekend = date.getDay() === 0 || date.getDay() === 6;
+
+    return [!isHoliday && !isWeekend];
+  };
+
+  // ถ้ามี Datepicker อยู่แล้ว ให้อัปเดตค่า Disable จาก API
+  if ($dateInput.hasClass('hasDatepicker')) {
+    $dateInput.datepicker(
+      'option',
+      'beforeShowDay',
+      beforeShowDay
+    );
+
+    $dateInput.datepicker('refresh');
+    return;
+  }
+
+  // สร้าง Datepicker ครั้งแรก
+  $dateInput.datepicker({
+    minDate: new Date(),
+    maxDate: 450,
+    changeMonth: true,
+    changeYear: true,
+    navigationAsDateFormat: true,
+    dateFormat: 'dd/mm/yy',
+
+    dayNamesMin: [
+      'อา', 'จ', 'อ', 'พ', 'พฤ', 'ศ', 'ส'
+    ],
+
+    monthNames: [
+      'มกราคม',
+      'กุมภาพันธ์',
+      'มีนาคม',
+      'เมษายน',
+      'พฤษภาคม',
+      'มิถุนายน',
+      'กรกฎาคม',
+      'สิงหาคม',
+      'กันยายน',
+      'ตุลาคม',
+      'พฤศจิกายน',
+      'ธันวาคม'
+    ],
+
+    monthNamesShort: [
+      'ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.',
+      'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.',
+      'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'
+    ],
+
+    beforeShowDay: beforeShowDay
+  });
+}
+
+
+
+function showHolidayTable(arr) {
+  if (arr && arr.length > 0) {
+    let table_result = `
+      <div class="holiday-table-header">
+        <div>
+          <h5 class="holiday-table-title">รายการวันหยุด</h5>
+          <p class="holiday-table-subtitle">
+            วันหยุดจากระบบจะแสดงเครื่องหมายล็อกและไม่สามารถลบได้
+          </p>
+        </div>
+
+        <span class="holiday-count">
+          ทั้งหมด ${arr.length} รายการ
+        </span>
+      </div>
+
+      <div class="table-responsive holiday-table-wrapper">
+        <table
+          class="table table-hover align-middle mb-0"
+          id="mainTable"
+        >
+          <thead>
+            <tr>
+              <th scope="col" class="text-center column-number">
+                ลำดับ
+              </th>
+
+              <th scope="col" class="text-center column-date">
+                วันที่
+              </th>
+
+              <th scope="col">
+                ชื่อวันหยุด
+              </th>
+
+              <th scope="col" class="text-center column-action">
+                จัดการ
+              </th>
+            </tr>
+          </thead>
+
+          <tbody>
+    `;
+
+    arr.forEach((r, index) => {
+      const date = escapeHtml(r[0]);
+      const holidayName = escapeHtml(r[1]);
+      const dataId = escapeHtml(r[2]);
+
+      const isSystemHoliday = r[2] === 'config_from_system';
+
+      const displayName = isSystemHoliday
+        ? 'วันหยุดที่กำหนดโดยระบบ'
+        : holidayName;
+
+      const deleteElement = isSystemHoliday
+        ? `
+          <span class="system-badge">
+            <span aria-hidden="true">🔒</span>
+            จากระบบ
+          </span>
+        `
+        : `
+          <button
+            type="button"
+            class="delete-holiday-btn first-hide"
+            data-id="${dataId}"
+            data-date="${date}"
+            data-name="${holidayName}"
+            onclick="delDateHoliday(event)"
+            title="ลบวันหยุด"
+            aria-label="ลบวันหยุด ${holidayName}"
+          >
+            <span aria-hidden="true">🗑️</span>
+          </button>
+        `;
+
+      table_result += `
+        <tr>
+          <td class="text-center">
+            ${index + 1}
+          </td>
+
+          <td class="text-center">
+            <span class="holiday-date">
+              ${date}
+            </span>
+          </td>
+
+          <td>
+            <span class="holiday-name">
+              ${displayName}
+            </span>
+          </td>
+
+          <td class="text-center">
+            ${deleteElement}
+          </td>
+        </tr>
+      `;
+    });
+
+    table_result += `
+          </tbody>
+        </table>
+      </div>
+    `;
+
+    $('#table_holidays').html(table_result);
+
+    $('#mainTable').DataTable({
+      pageLength: 10,
+
+      lengthMenu: [
+        [5, 10, 25],
+        [5, 10, 25]
+      ],
+
+      order: [[0, 'asc']],
+
+      autoWidth: false,
+
+      columnDefs: [
+        {
+          targets: [0, 1,2, 3],
+          className: 'dt-center'
+        },
+        {
+          targets: 3,
+          orderable: false,
+          searchable: false
+        }
+      ]
+    });
+
+  } else {
+    $('#table_holidays').html(`
+      <div class="holiday-empty">
+        <div class="holiday-empty-icon">📅</div>
+        <div class="holiday-empty-title">ไม่พบข้อมูลวันหยุด</div>
+        <div class="holiday-empty-text">
+          ยังไม่มีรายการวันหยุดที่บันทึกไว้
+        </div>
+      </div>
+    `);
+  }
+}
+
+
+async function delDateHoliday(e) {
+  e.preventDefault();
+
+  const button = e.currentTarget;
+
+  const webId = getTokenFromUrl();
+  const dataId = button.dataset.id;
+  const dtStr = button.dataset.date || '';
+  const dtName = button.dataset.name || '';
+  const userId = gUserId;
+
+  console.log("dataId: ",dataId)
+
+  // ตรวจสอบ Web token
+  if (!webId) {
+    await Swal.fire({
+      position: 'center',
+      icon: 'error',
+      title: 'ข้อมูล Web ไม่ถูกต้อง',
+      text: 'ไม่พบข้อมูล Web ID',
+      confirmButtonText: 'ตกลง'
+    });
+
+    return;
+  }
+
+  // ตรวจสอบ data ID
+  if (!dataId) {
+    await Swal.fire({
+      position: 'center',
+      icon: 'error',
+      title: 'ไม่พบรหัสข้อมูลวันหยุด',
+      text: 'ข้อมูลอาจถูกลบหรือมีการเปลี่ยนแปลงแล้ว',
+      confirmButtonText: 'ตกลง'
+    });
+
+    return;
+  }
+
+  // ป้องกันการลบวันหยุดที่กำหนดจากระบบ
+  if (dataId === 'config_from_system') {
+    await Swal.fire({
+      position: 'center',
+      icon: 'warning',
+      title: 'ไม่สามารถลบข้อมูลได้',
+      text: 'วันหยุดนี้ถูกกำหนดจากระบบ',
+      confirmButtonText: 'ตกลง'
+    });
+
+    return;
+  }
+
+  // เปิดกล่องยืนยันและตรวจสอบรหัสผ่าน
+  const confirmResult = await Swal.fire({
+    position: 'center',
+    width: 'auto',
+    title: 'ยืนยันการลบวันหยุด?',
+    icon: 'warning',
+
+    html: `
+      <div class="container">
+        <div class="row my-2">
+          <div class="col text-start">
+
+            <p class="mb-1">
+              <strong>วันที่:</strong>
+              ${escapeHtml(dtStr)}
+            </p>
+
+            <p class="mb-3">
+              <strong>ชื่อวันหยุด:</strong>
+              ${escapeHtml(dtName)}
+            </p>
+
+            <input
+              id="confirm_pass"
+              type="password"
+              class="form-control"
+              placeholder="โปรดกรอกรหัสผ่าน"
+              autocomplete="current-password"
+            >
+
+          </div>
+        </div>
+      </div>
+    `,
+
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'ตกลง',
+    cancelButtonText: 'ยกเลิก',
+
+    didOpen: () => {
+      const passwordInput = Swal
+        .getPopup()
+        .querySelector('#confirm_pass');
+
+      passwordInput.focus();
+
+      passwordInput.addEventListener('keydown', event => {
+        if (event.key === 'Enter') {
+          event.preventDefault();
+          Swal.clickConfirm();
+        }
+      });
+    },
+
+    preConfirm: () => {
+      const password = Swal
+        .getPopup()
+        .querySelector('#confirm_pass')
+        .value;
+
+      if (!password) {
+        Swal.showValidationMessage('โปรดกรอกรหัสผ่าน');
+        return false;
+      }
+
+      if (password !== gUser_pass) {
+        Swal.showValidationMessage('รหัสผ่านไม่ถูกต้อง');
+        return false;
+      }
+
+      return true;
+    }
+  });
+
+  if (!confirmResult.isConfirmed) {
+    return;
+  }
+
+  const delInfo = {
+    id: webId,
+    data_id: dataId,
+    userId: userId
+  };
+
+  button.disabled = true;
+  loadingStart();
+
+  try {
+    const fd = new FormData();
+
+    fd.append('action', 'deleteHoliday');
+    fd.append('data', JSON.stringify(delInfo));
+
+    const res = await api(mainUrl, {
+      method: 'POST',
+      redirect: 'follow',
+      mode: 'cors',
+      body: fd
+    });
+
+    // console.log('delete holiday response:', res);
+
+    if (!res) {
+      throw new Error('ไม่พบข้อมูลตอบกลับจากระบบ');
+    }
+
+    if (res.status === 'token_error') {
+      await Swal.fire({
+        position: 'center',
+        icon: 'error',
+        title: 'ข้อมูล Web ID ไม่ถูกต้อง',
+        text: res.message || 'โปรดตรวจสอบ Web link',
+        confirmButtonText: 'ตกลง'
+      });
+
+      return;
+    }
+
+    if (res.status !== 'success') {
+      throw new Error(
+        res.message || 'ระบบไม่สามารถลบวันหยุดได้'
+      );
+    }
+
+    gHolidaysAll = Array.isArray(res.holidaysAll) ? res.holidaysAll : [];
+
+    gHolidays = Array.isArray(res.holidays) ? res.holidays : [];
+
+    showHolidayTable(gHolidaysAll)
+    populateHolidays(gHolidays);
+
+    await Swal.fire({
+      position: 'center',
+      icon: 'success',
+      text: 'ลบข้อมูลวันหยุดสำเร็จ!',
+      showConfirmButton: false,
+      timer: 2000
+    });
+
+  } catch (error) {
+    console.error('delDateHoliday error:', error);
+
+    await Swal.fire({
+      position: 'center',
+      icon: 'error',
+      title: 'ลบข้อมูลไม่สำเร็จ',
+      text: error.message || 'เกิดข้อผิดพลาดในการลบข้อมูล',
+      confirmButtonText: 'ตกลง'
+    });
+
+  } finally {
+    loadingEnd();
+
+    // ตารางอาจถูกสร้างใหม่แล้ว จึงตรวจสอบก่อน
+    if (button.isConnected) {
+      button.disabled = false;
+    }
+  }
+}
+
+
+async function addHoliday(event){
+    event.preventDefault()
+    if(!validateAddHolidays()) return 
+
+    const webId = getTokenFromUrl();  
+
+    // ตรวจสอบ Web token
+    if (!webId) {
+      await Swal.fire({
+        position: 'center',
+        icon: 'error',
+        title: 'ข้อมูล Web ไม่ถูกต้อง',
+        text: 'ไม่พบข้อมูล Web ID',
+        confirmButtonText: 'ตกลง'
+      });
+
+      return;
+    }
+
+     const btn = document.getElementById("btn1")
+     btn.disabled = true;
+     showSpin3()
+     loadingStart();
+     const date = $('#date').val()
+     const name = $('#name').val()
+     const obj ={
+        id:webId,
+        name:name,        
+        date:date,       
+        userId:gUserId,
+     }
+
+     try {
+      const fd = new FormData();
+
+      fd.append('action', 'addHoliday');
+      fd.append('data', JSON.stringify(obj));
+
+      const res = await api(mainUrl, {
+        method: 'POST',
+        redirect: 'follow',
+        mode: 'cors',
+        body: fd
+      });
+
+      // console.log('add holiday response:', res);
+
+      if (!res) {
+        throw new Error('ไม่พบข้อมูลตอบกลับจากระบบ');
+      }
+
+      if (res.status === 'token_error') {
+        await Swal.fire({
+          position: 'center',
+          icon: 'error',
+          title: 'ข้อมูล Web ID ไม่ถูกต้อง',
+          text: res.message || 'โปรดตรวจสอบ Web link',
+          confirmButtonText: 'ตกลง'
+        });
+
+        return;
+      }
+
+      if (res.status !== 'success') {
+        throw new Error(
+          res.message || 'ระบบไม่สามารถบันทึกวันหยุดได้'
+        );
+      }      
+
+      gHolidaysAll = Array.isArray(res.holidaysAll) ? res.holidaysAll : [];
+
+      gHolidays = Array.isArray(res.holidays) ? res.holidays : [];
+
+      if (res.reason === 'found_duplicate_date') {
+            showHolidayTable(gHolidaysAll)
+            populateHolidays(gHolidays);
+
+            await Swal.fire({
+                position: 'center',
+                icon: 'warning',
+                title: 'บันทึกวันหยุดซ้ำ!',
+                text: 'กรุณาเลือกวันหยุดใหม่',
+                showConfirmButton: true,
+                timer: 2000
+            });
+
+            document.getElementById('date').value = '';
+            document.getElementById('date').focus();
+
+            return;
+      }
+      
+      showHolidayTable(gHolidaysAll)
+      populateHolidays(gHolidays);
+
+      const form = document.getElementById('addHolidaysForm');
+
+        if (form) {
+            form.reset();
+            form.classList.remove('was-validated');
+        }
+
+      await Swal.fire({
+        position: 'center',
+        icon: 'success',
+        text: 'บันทึกวันหยุดสำเร็จ!',
+        showConfirmButton: false,
+        timer: 2000
+      });
+      
+     } catch (error) {
+       console.error('addHoliday error:', error);
+
+        await Swal.fire({
+          position: 'center',
+          icon: 'error',
+          title: 'บันทึกวันหยุดไม่สำเร็จ',
+          text: error.message || 'เกิดข้อผิดพลาดในบันทึกวันหยุด',
+          confirmButtonText: 'ตกลง'
+        });
+      
+     }finally{
+      btn.disabled = false
+      hideSpin3()
+      loadingEnd()
+     }    
+}
+
+
+//-------------------------- Add Holidays ---------------------------------------------------------------------
+//-------------------------- Add Holidays ---------------------------------------------------------------------
 
 
 const mainUrl = 'https://script.google.com/macros/s/AKfycbyMdZpy3cx0ug7rqyL-LHEq8C3FSqNkKJ8vP_pWzVmE8Zifcbz5NWz8UVlvgZ0YkdqX/exec'
